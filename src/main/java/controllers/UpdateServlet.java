@@ -39,7 +39,7 @@ public class UpdateServlet extends HttpServlet {
             EntityManager em = DBUtil.createEntityManager();
 
             // セッションスコープからIDを取得して該当のIDのタスクを取得
-            Task task = em.find(Task.class, (Integer)(request.getSession().getAttribute("message_id")));
+            Task task = em.find(Task.class, (Integer)(request.getSession().getAttribute("task_id")));
 
             // フォームの内容を各フィールドに上書き
             String content = request.getParameter("content");
