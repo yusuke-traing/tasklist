@@ -2,11 +2,16 @@ package controllers;
 
 import java.io.IOException;
 
+import javax.persistence.EntityManager;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import models.Task;
+import utils.DBUtil;
 
 /**
  * Servlet implementation class EditServlet
@@ -26,8 +31,24 @@ public class EditServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        response.getWriter().append("Served at: ").append(request.getContextPath());
+        EntityManager em = DBUtil.createEntityManager();
+
+        // 該当のIDのタスクを取得
+        Task task = em.find(Task.class, Integer.parseInt(request.getParameter("id")));
+
+        em.close();
+
+        // メッセージ情報とセッションIDをリクエストスコープに登録
+        request.setAttribute("task", task);
+        request.setAttribute("_token", request.getSession().getId());
+
+        // メッセージIDをセッションスコープに登録
+        if (task != null) {
+            request.getSession().setAttribute("message_id", task.getId());
+        }
+
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/tasks/edit.jsp");
+        rd.forward(request, response);
     }
 
 
