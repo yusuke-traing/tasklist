@@ -9,16 +9,27 @@
         </c:if>
         <c:choose>
             <c:when test="${tasks.size()>0}">
-                <ul>
-                    <c:forEach var="task" items="tasks" >
-                        <li>
-                            <a href="${pageContext.request.contextPath}/show?id=${message.id}">
-                                <c:out value="${task.id}"></c:out>
-                            </a>
-                            ：<c:out value="${message.content}" />
-                        </li>
-                    </c:forEach>
-                </ul>
+                <h2>タスク一覧</h2>
+                <table border = "1">
+                    <tbody>
+                        <tr>
+                            <th>No</th>
+                            <th>タスク</th>
+                        </tr>
+                        <c:forEach var="task" items="${tasks}" >
+                            <tr>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/show?id=${task.id}">
+                                    <c:out value="${task.id}"></c:out>
+                                    </a>
+                                </td>
+                                <td>
+                                    <c:out value="${task.content}" />
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
                 <div id="pagenation">
                     (全 ${tasks_count} 件)<br>
                     <c:forEach var="i" begin="1" end="${((tasks_count - 1) / 10) + 1}" step="1">
